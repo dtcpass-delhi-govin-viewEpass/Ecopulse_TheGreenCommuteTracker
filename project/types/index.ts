@@ -1,18 +1,24 @@
 export interface User {
   id: string;
   name: string;
-  email: string;
+  email?: string;
+  age?: number;
+  gender?: 'male' | 'female' | 'other' | 'prefer-not-to-say';
+  profession?: string;
+  isAnonymous: boolean;
   createdAt: Date;
 }
 
 export interface CommuteLog {
   id: string;
   userId: string;
-  date: string;
   modes: string[];
-  distance: number;
-  co2Saved: number;
+  distanceRange: string;
+  commuteTime: number; // minutes
+  frequency: string;
+  co2Saved: number; // kg
   createdAt: Date;
+  date: string; // YYYY-MM-DD format
 }
 
 export interface CommunityStats {
@@ -29,4 +35,19 @@ export interface LeaderboardEntry {
   totalCO2Saved: number;
   rank: number;
   isAnonymous: boolean;
+}
+
+export interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  requirement: number;
+  type: 'streak' | 'total' | 'mode' | 'distance';
+}
+
+export interface UserBadge {
+  userId: string;
+  badgeId: string;
+  earnedAt: Date;
 }
