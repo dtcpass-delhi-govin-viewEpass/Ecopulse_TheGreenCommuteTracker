@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import createContextHook from '@nkzw/create-context-hook';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { User, CommuteLog, CommunityStats } from '@/types';
+import { useEffect, useState } from 'react';
+import { User, CommuteLog, CommunityStats } from '../types';
+import WebStorage from '../utils/storage';
 
 const STORAGE_KEYS = {
   USER: 'ecopulse_user',
@@ -9,49 +11,25 @@ const STORAGE_KEYS = {
   USER_SETTINGS: 'ecopulse_user_settings',
 };
 
-interface AppContextType {
-  user: User | null;
-  userSettings: { monthlyGoal: number };
-  isLoading: boolean;
-  commuteLogs: CommuteLog[];
-  communityStats: CommunityStats | undefined;
-  register: (userData: Omit<User, 'id' | 'createdAt'>) => void;
-  addCommuteLog: (logData: Omit<CommuteLog, 'id' | 'userId' | 'createdAt'>) => void;
-  updateSettings: (settings: { monthlyGoal: number }) => void;
-  logout: () => void;
-  isRegistering: boolean;
-  isAddingLog: boolean;
-}
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-export const useApp = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error('useApp must be used within an AppProvider');
-  }
-  return context;
-};
-
-interface AppProviderProps {
-  children: ReactNode;
-}
-
-export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+export const [AppProvider, useApp] = createContextHook(() => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [userSettings, setUserSettings] = useState<{ monthlyGoal: number }>({
-    monthlyGoal: 10,
-  });
+  const [userSettings, setUserSettings] = useState<{ monthlyGoal: number }>({ monthlyGoal: 10 });
   const queryClient = useQueryClient();
 
-  // Load user from localStorage
+  // Load user from storage
   const userQuery = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
       try {
-        const stored = localStorage.getItem(STORAGE_KEYS.USER);
-        return stored ? JSON.parse(stored) : null;
+        const stored = await WebStorage.getItem(STORAGE_KEYS.USER);
+        if (stored) {
+          const userData = JSON.parse(stored);
+          // Convert createdAt string back to Date object
+          userData.createdAt = new Date(userData.createdAt);
+          return userData;
+        }
+        return null;
       } catch (error) {
         console.error('Error loading user:', error);
         return null;
@@ -64,8 +42,16 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     queryKey: ['commuteLogs'],
     queryFn: async () => {
       try {
-        const stored = localStorage.getItem(STORAGE_KEYS.COMMUTE_LOGS);
-        return stored ? JSON.parse(stored) : [];
+        const stored = await WebStorage.getItem(STORAGE_KEYS.COMMUTE_LOGS);
+        if (stored) {
+          const logs = JSON.parse(stored);
+          // Convert createdAt strings back to Date objects
+          return logs.map((log: any) => ({
+            ...log,
+            createdAt: new Date(log.createdAt),
+          }));
+        }
+        return [];
       } catch (error) {
         console.error('Error loading commute logs:', error);
         return [];
@@ -78,7 +64,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     queryKey: ['userSettings'],
     queryFn: async () => {
       try {
-        const stored = localStorage.getItem(STORAGE_KEYS.USER_SETTINGS);
+        const stored = await WebStorage.getItem(STORAGE_KEYS.USER_SETTINGS);
         return stored ? JSON.parse(stored) : { monthlyGoal: 10 };
       } catch (error) {
         console.error('Error loading user settings:', error);
@@ -92,7 +78,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     queryKey: ['communityStats'],
     queryFn: async () => {
       try {
-        const stored = localStorage.getItem(STORAGE_KEYS.COMMUNITY_STATS);
+        const stored = await WebStorage.getItem(STORAGE_KEYS.COMMUNITY_STATS);
         if (stored) {
           return JSON.parse(stored);
         }
@@ -125,9 +111,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         id: Date.now().toString(),
         createdAt: new Date(),
       };
-
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser));
-
+      
+      await WebStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser));
+      
       // Update community stats
       const currentStats = communityStatsQuery.data || {
         totalUsers: 0,
@@ -136,14 +122,14 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         mostPopularMode: 'walking',
         totalCommutes: 0,
       };
-
+      
       const updatedStats = {
         ...currentStats,
         totalUsers: currentStats.totalUsers + 1,
       };
-
-      localStorage.setItem(STORAGE_KEYS.COMMUNITY_STATS, JSON.stringify(updatedStats));
-
+      
+      await WebStorage.setItem(STORAGE_KEYS.COMMUNITY_STATS, JSON.stringify(updatedStats));
+      
       return newUser;
     },
     onSuccess: (newUser) => {
@@ -157,19 +143,19 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const addCommuteLogMutation = useMutation({
     mutationFn: async (logData: Omit<CommuteLog, 'id' | 'userId' | 'createdAt'>) => {
       if (!user) throw new Error('User not found');
-
+      
       const newLog: CommuteLog = {
         ...logData,
         id: Date.now().toString(),
         userId: user.id,
         createdAt: new Date(),
       };
-
+      
       const currentLogs = commuteLogsQuery.data || [];
       const updatedLogs = [...currentLogs, newLog];
-
-      localStorage.setItem(STORAGE_KEYS.COMMUTE_LOGS, JSON.stringify(updatedLogs));
-
+      
+      await WebStorage.setItem(STORAGE_KEYS.COMMUTE_LOGS, JSON.stringify(updatedLogs));
+      
       // Update community stats
       const currentStats = communityStatsQuery.data || {
         totalUsers: 1,
@@ -178,9 +164,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         mostPopularMode: 'walking',
         totalCommutes: 0,
       };
-
+      
       const isThisWeek = new Date(newLog.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
-
+      
       const updatedStats: CommunityStats = {
         ...currentStats,
         totalCO2Saved: currentStats.totalCO2Saved + newLog.co2Saved,
@@ -188,9 +174,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         totalCommutes: currentStats.totalCommutes + 1,
         mostPopularMode: newLog.modes[0] || currentStats.mostPopularMode,
       };
-
-      localStorage.setItem(STORAGE_KEYS.COMMUNITY_STATS, JSON.stringify(updatedStats));
-
+      
+      await WebStorage.setItem(STORAGE_KEYS.COMMUNITY_STATS, JSON.stringify(updatedStats));
+      
       return newLog;
     },
     onSuccess: () => {
@@ -202,7 +188,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   // Update user settings mutation
   const updateSettingsMutation = useMutation({
     mutationFn: async (settings: { monthlyGoal: number }) => {
-      localStorage.setItem(STORAGE_KEYS.USER_SETTINGS, JSON.stringify(settings));
+      await WebStorage.setItem(STORAGE_KEYS.USER_SETTINGS, JSON.stringify(settings));
       return settings;
     },
     onSuccess: (settings) => {
@@ -214,7 +200,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      localStorage.removeItem(STORAGE_KEYS.USER);
+      await WebStorage.removeItem(STORAGE_KEYS.USER);
     },
     onSuccess: () => {
       setUser(null);
@@ -235,7 +221,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   }, [userSettingsQuery.data]);
 
-  const value: AppContextType = {
+  return {
     user,
     userSettings,
     isLoading: isLoading || userQuery.isLoading,
@@ -248,6 +234,4 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     isRegistering: registerMutation.isPending,
     isAddingLog: addCommuteLogMutation.isPending,
   };
-
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-};
+});
