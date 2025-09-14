@@ -1,12 +1,15 @@
-
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { Platform, StyleSheet, Text, View } from "react-native";
 
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Modal</Text>
-      <Text>This is a modal screen</Text>
+      <View style={styles.separator} />
+      <Text>This is an example modal. You can edit it in app/modal.tsx.</Text>
+
+      {/* Use a light status bar on iOS to account for the black space above the modal */}
+      <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>
   );
 }
@@ -14,14 +17,16 @@ export default function ModalScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#e0f7e9',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2d5a41',
-    marginBottom: 10,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: "80%",
   },
 });
