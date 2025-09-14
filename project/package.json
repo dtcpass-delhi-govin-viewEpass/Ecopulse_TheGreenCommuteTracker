@@ -1,11 +1,13 @@
 {
   "name": "expo-app",
-  "main": "expo-router/entry",
   "version": "1.0.0",
+  "main": "expo-router/entry",
+  "private": true,
   "scripts": {
     "start": "npx rork start -p 9ophg2s8vko95z84jfqr6 --tunnel",
     "start-web": "npx rork start -p 9ophg2s8vko95z84jfqr6 --web --tunnel",
-    "start-web-dev": "DEBUG=expo* npx rork start -p 9ophg2s8vko95z84jfqr6 --web --tunnel"
+    "start-web-dev": "DEBUG=expo* npx rork start -p 9ophg2s8vko95z84jfqr6 --web --tunnel",
+    "build:web": "expo export:web --output web-build"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -51,6 +53,5 @@
     "@expo/ngrok": "^4.1.0",
     "@types/react": "~19.0.10",
     "typescript": "~5.8.3"
-  },
-  "private": true
+  }
 }
