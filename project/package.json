@@ -4,6 +4,7 @@
 "main": "expo-router/entry",
 "private": true,
 "scripts": {
+"preinstall": "node -v && npm -v && npm config list",
 "start": "npx rork start -p 9ophg2s8vko95z84jfqr6 --tunnel",
 "start-web": "npx rork start -p 9ophg2s8vko95z84jfqr6 --web --tunnel",
 "start-web-dev": "DEBUG=expo* npx rork start -p 9ophg2s8vko95z84jfqr6 --web --tunnel",
