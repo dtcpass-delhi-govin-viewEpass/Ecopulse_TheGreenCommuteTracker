@@ -11,15 +11,29 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    host: '0.0.0.0',
+    port: 5000,
   },
   build: {
     outDir: 'dist',
+    commonjsOptions: {
+      transformMixedEsModules: true
+    },
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html')
+      },
+      external: (id) => {
+        // Exclude Expo Router and React Native dependencies from web build
+        return id.includes('expo-router') || 
+               id.includes('react-native') ||
+               id.includes('@expo/') ||
+               id.includes('expo-')
       }
     }
   },
-  publicDir: 'src/public'
+  publicDir: 'src/public',
+  optimizeDeps: {
+    exclude: ['expo-router', 'react-native']
+  }
 })

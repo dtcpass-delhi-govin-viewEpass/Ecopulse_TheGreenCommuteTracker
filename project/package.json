@@ -8,7 +8,10 @@
 "start": "npx rork start -p 9ophg2s8vko95z84jfqr6 --tunnel",
 "start-web": "npx rork start -p 9ophg2s8vko95z84jfqr6 --web --tunnel",
 "start-web-dev": "DEBUG=expo* npx rork start -p 9ophg2s8vko95z84jfqr6 --web --tunnel",
-"build:web": "npx expo export --platform web"
+"dev": "vite",
+"build": "vite build",
+"build:web": "npx expo export --platform web",
+"preview": "vite preview"
 },
 "dependencies": {
 "@expo/vector-icons": "^14.1.0",
