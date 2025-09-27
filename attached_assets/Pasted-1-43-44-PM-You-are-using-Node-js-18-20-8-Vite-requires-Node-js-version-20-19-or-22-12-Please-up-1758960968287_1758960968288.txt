@@ -1,0 +1,46 @@
+1:43:44 PM: You are using Node.js 18.20.8. Vite requires Node.js version 20.19+ or 22.12+. Please upgrade your Node.js version.
+1:43:44 PM: ▲ [WARNING] Cannot find base config file "expo/tsconfig.base" [tsconfig.json]
+1:43:44 PM:     ../tsconfig.json:3:13:
+1:43:44 PM:       3 │   "extends": "expo/tsconfig.base"
+1:43:44 PM:         ╵              ~~~~~~~~~~~~~~~~~~~~
+1:43:44 PM: failed to load config from /opt/build/repo/project/vite.config.ts
+1:43:44 PM: error during build:
+1:43:44 PM: Error [ERR_REQUIRE_ESM]: require() of ES Module /opt/build/repo/project/node_modules/vite/dist/node/index.js from /opt/build/repo/project/vite.config.ts not supported.
+1:43:44 PM: Instead change the require of index.js in /opt/build/repo/project/vite.config.ts to a dynamic import() which is available in all CommonJS modules.
+1:43:44 PM:     at _require.extensions.<computed> [as .js] (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36647:9)
+1:43:44 PM:     at Object.<anonymous> (/opt/build/repo/project/vite.config.ts:36:19)
+1:43:44 PM:     at _require.extensions.<computed> [as .js] (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36646:44)
+1:43:44 PM:     at loadConfigFromBundledFile (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36650:15)
+1:43:44 PM:     at async bundleAndLoadConfigFile (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36520:21)
+1:43:44 PM:     at async loadConfigFromFile (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36487:42)
+1:43:44 PM:     at async resolveConfig (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36133:22)
+1:43:44 PM:     at async createBuilder (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:34588:19)
+1:43:44 PM:     at async CAC.<anonymous> (file:///opt/build/repo/project/node_modules/vite/dist/node/cli.js:647:19)
+1:43:44 PM: ​
+1:43:44 PM: "build.command" failed                                        
+1:43:44 PM: ────────────────────────────────────────────────────────────────
+1:43:44 PM: ​
+1:43:44 PM:   Error message
+1:43:44 PM:   Command failed with exit code 1: npm ci --legacy-peer-deps && npm run build (https://ntl.fyi/exit-code-1)
+1:43:44 PM: ​
+1:43:44 PM:   Error location
+1:43:44 PM:   In build.command from netlify.toml:
+1:43:44 PM:   npm ci --legacy-peer-deps && npm run build
+1:43:44 PM: ​
+1:43:44 PM:   Resolved config
+1:43:44 PM:   build:
+1:43:44 PM:     base: /opt/build/repo/project
+1:43:44 PM:     command: npm ci --legacy-peer-deps && npm run build
+1:43:44 PM:     commandOrigin: config
+1:43:44 PM:     environment:
+1:43:44 PM:       - NODE_VERSION
+1:43:44 PM:     publish: /opt/build/repo/project/dist
+1:43:44 PM:     publishOrigin: config
+1:43:44 PM:   redirects:
+1:43:45 PM:     - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+1:43:45 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+1:43:45 PM: Failing build: Failed to build site
+1:43:45 PM: Finished processing build request in 30.509s

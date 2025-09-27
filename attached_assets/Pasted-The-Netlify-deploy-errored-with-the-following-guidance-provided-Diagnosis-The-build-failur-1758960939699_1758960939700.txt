@@ -1,0 +1,90 @@
+The Netlify deploy errored, with the following guidance provided:
+
+### Diagnosis
+The build failure is due to incompatible Node.js versions for the packages `react-router-dom` and `vite`. The current Node.js version is `v18.20.8` which does not meet the required versions (`>=20.0.0` for `react-router-dom` and `^20.19.0 || >=22.12.0` for `vite`).
+
+### Solution
+1. **Upgrade Node.js Version**:
+   - Upgrade Node.js to versions `20.19+` or `22.12+` to meet the requirements of the packages.
+   - Link to the documentation for [changing Node versions](https://docs.netlify.com/configure-builds/manage-dependencies/#node-js-and-javascript).
+
+2. **Verify Package Configurations**:
+   - Before upgrading Node.js, verify that the required package versions are in the `package.json` of your project.
+   - Ensure the file dependencies were committed to the repository.
+
+By upgrading Node.js to a compatible version and verifying package configurations, the build issue should be resolved.
+
+The relevant error logs are:
+
+Line 128: npm warn EBADENGINE Unsupported engine {
+Line 129: npm warn EBADENGINE   package: 'react-router-dom@7.9.1',
+Line 130: npm warn EBADENGINE   required: { node: '>=20.0.0' },
+Line 131: npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+Line 132: npm warn EBADENGINE }
+Line 133: npm warn EBADENGINE Unsupported engine {
+Line 134: npm warn EBADENGINE   package: 'vite@7.1.5',
+Line 135: npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+Line 136: npm warn EBADENGINE   current: { node: 'v18.20.8', npm: '10.8.2' }
+Line 137: npm warn EBADENGINE }
+Line 138: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 139: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you wa
+Line 140: npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+Line 141: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+Line 142: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+Line 143: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+Line 144: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+Line 145: npm warn deprecated uuid@3.4.0: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circums
+Line 146: > expo-app@1.0.0 preinstall
+Line 147: > node -v && npm -v && npm config list
+Line 148: v18.20.8
+Line 175: ; HOME = /opt/buildhome
+Line 176: ; Run `npm config ls -l` to show all defaults.
+Line 177: added 824 packages in 10s
+Line 178: > expo-app@1.0.0 build
+Line 179: > vite build
+Line 180: [33mYou are using Node.js 18.20.8. Vite requires Node.js version 20.19+ or 22.12+. Please upgrade your Node.js version.[39m
+Line 181: ▲ [WARNING] Cannot find base config file "expo/tsconfig.base" [tsconfig.json]
+Line 182:     ../tsconfig.json:3:13:
+Line 183:       3 │   "extends": "expo/tsconfig.base"
+Line 184:         ╵              ~~~~~~~~~~~~~~~~~~~~
+Line 185: [31mfailed to load config from /opt/build/repo/project/vite.config.ts[39m
+Line 186: [31merror during build:
+Line 187: Error [ERR_REQUIRE_ESM]: require() of ES Module /opt/build/repo/project/node_modules/vite/dist/node/index.js from /opt/build/rep
+Line 188: Instead change the require of index.js in /opt/build/repo/project/vite.config.ts to a dynamic import() which is available in all
+Line 189:     at _require.extensions.<computed> [as .js] (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.j
+Line 190:     at Object.<anonymous> (/opt/build/repo/project/vite.config.ts:36:19)
+Line 191:     at _require.extensions.<computed> [as .js] (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.j
+Line 192:     at loadConfigFromBundledFile (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36650:15)
+Line 193:     at async bundleAndLoadConfigFile (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36520:21
+Line 194:     at async loadConfigFromFile (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36487:42)
+Line 195:     at async resolveConfig (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36133:22)
+Line 196:     at async createBuilder (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:34588:19)
+Line 197:     at async CAC.<anonymous> (file:///opt/build/repo/project/node_modules/vite/dist/node/cli.js:647:19)[39m
+Line 198: [91m[1m​[22m[39m
+Line 199: [91m[1m"build.command" failed                                        [22m[39m
+Line 200: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 201: ​
+Line 202:   [31m[1mError message[22m[39m
+Line 203:   Command failed with exit code 1: npm ci --legacy-peer-deps && npm run build
+Line 204: ​
+Line 205:   [31m[1mError location[22m[39m
+Line 206:   In build.command from netlify.toml:
+Line 207:   npm ci --legacy-peer-deps && npm run build
+Line 208: ​
+Line 209:   [31m[1mResolved config[22m[39m
+Line 210:   build:
+Line 211:     base: /opt/build/repo/project
+Line 212:     command: npm ci --legacy-peer-deps && npm run build
+Line 213:     commandOrigin: config
+Line 214:     environment:
+Line 215:       - NODE_VERSION
+Line 216:     publish: /opt/build/repo/project/dist
+Line 217:     publishOrigin: config
+Line 218:   redirects:
+Line 219:     - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+Line 220: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 221: Failing build: Failed to build site
+Line 222: Finished processing build request in 30.509s
