@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { Home, Plus, BarChart3, Trophy, Info, LogOut } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
@@ -13,8 +13,13 @@ const Layout: React.FC = () => {
     navigate('/auth');
   };
 
+  useEffect(() => {
+    if (!user) {
+      navigate('/auth');
+    }
+  }, [user, navigate]);
+
   if (!user) {
-    navigate('/auth');
     return null;
   }
 
