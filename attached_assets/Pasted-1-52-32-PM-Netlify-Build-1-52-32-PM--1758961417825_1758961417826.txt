@@ -1,0 +1,118 @@
+1:52:32 PM: Netlify Build                                                 
+1:52:32 PM: ────────────────────────────────────────────────────────────────
+1:52:32 PM: ​
+1:52:32 PM: ❯ Version
+1:52:32 PM:   @netlify/build 35.1.8
+1:52:32 PM: ​
+1:52:32 PM: ❯ Flags
+1:52:32 PM:   accountId: 68d79a891814c8e0d7a2136d
+1:52:32 PM:   baseRelDir: true
+1:52:32 PM:   buildId: 68d79eb47128a26778fad2f9
+1:52:32 PM:   deployId: 68d79eb47128a26778fad2fb
+1:52:32 PM: ​
+1:52:32 PM: ❯ Current directory
+1:52:32 PM:   /opt/build/repo/project
+1:52:32 PM: ​
+1:52:32 PM: ❯ Config file
+1:52:32 PM:   /opt/build/repo/project/netlify.toml
+1:52:32 PM: ​
+1:52:32 PM: ❯ Context
+1:52:32 PM:   production
+1:52:32 PM: ​
+1:52:32 PM: build.command from netlify.toml                               
+1:52:32 PM: ────────────────────────────────────────────────────────────────
+1:52:32 PM: ​
+1:52:32 PM: $ npm ci --legacy-peer-deps && npm run build
+1:52:33 PM: npm warn EBADENGINE Unsupported engine {
+1:52:33 PM: npm warn EBADENGINE   package: '@vitejs/plugin-react@5.0.2',
+1:52:33 PM: npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+1:52:33 PM: npm warn EBADENGINE   current: { node: 'v20.18.0', npm: '10.8.2' }
+1:52:33 PM: npm warn EBADENGINE }
+1:52:33 PM: npm warn EBADENGINE Unsupported engine {
+1:52:33 PM: npm warn EBADENGINE   package: 'vite@7.1.5',
+1:52:33 PM: npm warn EBADENGINE   required: { node: '^20.19.0 || >=22.12.0' },
+1:52:33 PM: npm warn EBADENGINE   current: { node: 'v20.18.0', npm: '10.8.2' }
+1:52:33 PM: npm warn EBADENGINE }
+1:52:46 PM: Failed during stage 'building site': Build script returned non-zero exit code: 2
+1:52:38 PM: npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+1:52:38 PM: npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+1:52:39 PM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+1:52:39 PM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+1:52:39 PM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+1:52:39 PM: npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+1:52:39 PM: npm warn deprecated uuid@3.4.0: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+1:52:44 PM: > expo-app@1.0.0 preinstall
+1:52:44 PM: > node -v && npm -v && npm config list
+1:52:44 PM: v20.18.0
+1:52:44 PM: 10.8.2
+1:52:44 PM: ; "project" config from /opt/build/repo/project/.npmrc
+1:52:44 PM: audit = false
+1:52:44 PM: Contents: = true
+1:52:44 PM: fund = false
+1:52:44 PM: ; legacy-peer-deps = true ; overridden by env
+1:52:44 PM: ; save-exact = true ; overridden by env
+1:52:44 PM: ; save-prefix = "" ; overridden by env
+1:52:44 PM: ; "env" config from environment
+1:52:44 PM: cache = "/opt/buildhome/.npm"
+1:52:44 PM: global-prefix = "/opt/buildhome/.nvm/versions/node/v20.18.0"
+1:52:44 PM: init-module = "/opt/buildhome/.npm-init.js"
+1:52:44 PM: legacy-peer-deps = true
+1:52:44 PM: local-prefix = "/opt/build/repo/project"
+1:52:44 PM: node-gyp = "/opt/buildhome/.nvm/versions/node/v20.18.0/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js"
+1:52:44 PM: npm-version = "10.8.2"
+1:52:44 PM: prefix = "/opt/buildhome/.nvm/versions/node/v20.18.0"
+1:52:44 PM: save-exact = true
+1:52:44 PM: save-prefix = ""
+1:52:44 PM: user-agent = "npm/10.8.2 node/v20.18.0 linux x64 workspaces/false ci/netlify-ci"
+1:52:44 PM: userconfig = "/opt/buildhome/.npmrc"
+1:52:44 PM: ; node bin location = /opt/buildhome/.nvm/versions/node/v20.18.0/bin/node
+1:52:44 PM: ; node version = v20.18.0
+1:52:44 PM: ; npm local prefix = /opt/build/repo/project
+1:52:44 PM: ; npm version = 10.8.2
+1:52:44 PM: ; cwd = /opt/build/repo/project
+1:52:44 PM: ; HOME = /opt/buildhome
+1:52:44 PM: ; Run `npm config ls -l` to show all defaults.
+1:52:44 PM: added 824 packages in 12s
+1:52:45 PM: > expo-app@1.0.0 build
+1:52:45 PM: > vite build
+1:52:45 PM: You are using Node.js 20.18.0. Vite requires Node.js version 20.19+ or 22.12+. Please upgrade your Node.js version.
+1:52:45 PM: ▲ [WARNING] Cannot find base config file "expo/tsconfig.base" [tsconfig.json]
+1:52:45 PM:     ../tsconfig.json:3:13:
+1:52:45 PM:       3 │   "extends": "expo/tsconfig.base"
+1:52:45 PM:         ╵              ~~~~~~~~~~~~~~~~~~~~
+1:52:45 PM: failed to load config from /opt/build/repo/project/vite.config.ts
+1:52:45 PM: error during build:
+1:52:45 PM: Error [ERR_REQUIRE_ESM]: require() of ES Module /opt/build/repo/project/node_modules/vite/dist/node/index.js from /opt/build/repo/project/vite.config.ts not supported.
+1:52:45 PM: Instead change the require of index.js in /opt/build/repo/project/vite.config.ts to a dynamic import() which is available in all CommonJS modules.
+1:52:45 PM:     at _require.extensions.<computed> [as .js] (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36647:9)
+1:52:45 PM:     at Object.<anonymous> (/opt/build/repo/project/vite.config.ts:36:19)
+1:52:45 PM:     at _require.extensions.<computed> [as .js] (file:///opt/build/repo/project/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36646:44)
+1:52:45 PM: ​
+1:52:45 PM: "build.command" failed                                        
+1:52:45 PM: ────────────────────────────────────────────────────────────────
+1:52:45 PM: ​
+1:52:45 PM:   Error message
+1:52:45 PM:   Command failed with exit code 1: npm ci --legacy-peer-deps && npm run build
+1:52:45 PM: ​
+1:52:45 PM:   Error location
+1:52:45 PM:   In build.command from netlify.toml:
+1:52:45 PM:   npm ci --legacy-peer-deps && npm run build
+1:52:45 PM: ​
+1:52:45 PM:   Resolved config
+1:52:45 PM:   build:
+1:52:45 PM:     base: /opt/build/repo/project
+1:52:45 PM:     command: npm ci --legacy-peer-deps && npm run build
+1:52:45 PM:     commandOrigin: config
+1:52:45 PM:     environment:
+1:52:45 PM:       - NODE_VERSION
+1:52:45 PM:       - NPM_FLAGS
+1:52:45 PM:     publish: /opt/build/repo/project/dist
+1:52:45 PM:     publishOrigin: config
+1:52:45 PM:   redirects:
+1:52:45 PM:     - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+1:52:45 PM: Build failed due to a user error: Build script returned non-zero exit code: 2
+1:52:45 PM: Failing build: Failed to build site
+1:52:46 PM: Finished processing build request in 33.179s
