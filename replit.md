@@ -22,10 +22,10 @@ The application uses a hybrid architecture supporting both React Native (mobile)
 - **Context API** for app-wide user and settings management
 
 ### Data Storage
-- **AsyncStorage** for React Native mobile persistence
-- **LocalStorage** for web browser persistence
-- **Storage abstraction layer** that provides consistent API across platforms
-- **No backend database** - all data stored locally on device/browser
+- **SQLite Database**: Client-side SQLite using sql.js (WebAssembly)
+- **Persistent Storage**: Data persists across browser sessions and server restarts
+- **Data Export/Import**: Backup and restore your data as JSON files
+- **No backend database** - SQLite runs entirely in the browser
 
 ### Frontend Architecture
 - **Component-based architecture** with shared UI components

@@ -25,9 +25,9 @@ const About: React.FC = () => {
         colors={[Colors.light.primary, Colors.light.secondary]}
         style={styles.header}
       >
-        <Leaf size={60} color={Colors.light.card} />
-        <h1 style={styles.headerTitle}>EcoPulse</h1>
-        <p style={styles.headerSubtitle}>Smart Green Commute Tracker</p>
+        
+        <h1 style={styles.headerTitle}>Feel EcoPulse <Leaf size={38} color={Colors.light.card} style={{ position: "relative", top: "5px" }} /></h1>
+        <p style={styles.headerSubtitle}>Track Your Commute • Reduce Your Carbon</p>
       </LinearGradient>
 
       <div style={styles.content}>
@@ -176,7 +176,9 @@ const About: React.FC = () => {
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
+    padding: '0',
     backgroundColor: Colors.light.background,
+    backgroundImage: `linear-gradient(rgba(168, 230, 167, 0.9), rgba(219, 246, 210, 0.9)), url('https://png.pngtree.com/thumb_back/fw800/background/20231105/pngtree-natural-green-leaves-pattern-a-refreshing-background-and-wallpaper-image_13753535.png')`,
     minHeight: '100vh',
   },
   header: {
@@ -297,7 +299,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '20px',
     borderRadius: '12px',
     marginBottom: '32px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   contactTitle: {
     fontSize: '1.125rem',
@@ -331,7 +333,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '20px',
     borderRadius: '12px',
     marginBottom: '32px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   userTitle: {
     fontSize: '1.125rem',

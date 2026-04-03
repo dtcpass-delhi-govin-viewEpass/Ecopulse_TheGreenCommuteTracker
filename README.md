@@ -13,14 +13,11 @@ Built with **React + Vite (Web) and Expo (Mobile)**, EcoPulse ensures a smooth, 
 - 🖼️ Responsive Design – Optimized for desktop & mobile
 - 🌐 Deployed on Netlify – Fast and globally available
 
-### 🛠️ Tech Stack
-
-* Frontend (Web): React 18 + Vite
-* Frontend (Mobile): Expo + React Native
-* State Management: Zustand + TanStack React Query
-* UI & Styling: NativeWind + Expo Icons + Lucide React Native
-* Deployment: Netlify (Web)
-* Version Control: GitHub
+### �️ Data Storage
+- **SQLite Database**: Client-side SQLite using sql.js (WebAssembly)
+- **Persistent Storage**: Data persists across browser sessions and server restarts
+- **Data Export/Import**: Backup and restore your data as JSON files
+- **Cross-device Sync**: Data stays with your browser profile
 
 ### 📦 Installation & Setup
 

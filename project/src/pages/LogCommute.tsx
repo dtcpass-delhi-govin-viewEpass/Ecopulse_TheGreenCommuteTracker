@@ -108,7 +108,7 @@ const LogCommute: React.FC = () => {
     <div style={styles.container}>
       <div style={styles.section}>
         <h3 style={styles.sectionTitle}>
-          <MapPin size={20} color={Colors.light.primary} style={styles.titleIcon} /> Commute Mode
+          <MapPin size={20} color={Colors.light.text} style={styles.titleIcon} /> Commute Mode
         </h3>
         <p style={styles.sectionSubtitle}>Select all modes you used (you can pick multiple)</p>
         
@@ -143,7 +143,7 @@ const LogCommute: React.FC = () => {
 
       <div style={styles.section}>
         <h3 style={styles.sectionTitle}>
-          <MapPin size={20} color={Colors.light.primary} style={styles.titleIcon} /> Distance Range
+          <MapPin size={20} color={Colors.light.text} style={styles.titleIcon} /> Distance Range
         </h3>
         <p style={styles.sectionSubtitle}>How far is your one-way commute?</p>
         
@@ -172,7 +172,7 @@ const LogCommute: React.FC = () => {
 
       <div style={styles.section}>
         <h3 style={styles.sectionTitle}>
-          <Clock size={20} color={Colors.light.primary} style={styles.titleIcon} /> Commute Time
+          <Clock size={20} color={Colors.light.text} style={styles.titleIcon} /> Commute Time
         </h3>
         <p style={styles.sectionSubtitle}>How long does your one-way trip take?</p>
         
@@ -189,7 +189,7 @@ const LogCommute: React.FC = () => {
 
       <div style={styles.section}>
         <h3 style={styles.sectionTitle}>
-          <Calendar size={20} color={Colors.light.primary} style={styles.titleIcon} /> Frequency
+          <Calendar size={20} color={Colors.light.text} style={styles.titleIcon} /> Frequency
         </h3>
         <p style={styles.sectionSubtitle}>How often do you make this commute?</p>
         
@@ -236,6 +236,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   container: {
     padding: '0',
     backgroundColor: Colors.light.background,
+    backgroundImage: `linear-gradient(rgba(168, 230, 167, 0.9), rgba(219, 246, 210, 0.9)), url('https://png.pngtree.com/thumb_back/fw800/background/20231105/pngtree-natural-green-leaves-pattern-a-refreshing-background-and-wallpaper-image_13753535.png')`,
     minHeight: '100vh',
   },
   authPrompt: {
@@ -276,7 +277,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderBottom: `1px solid ${Colors.light.border}`,
   },
   sectionTitle: {
-    fontSize: '1.125rem',
+    fontSize: '1.5rem',
     fontWeight: 'bold',
     color: Colors.light.text,
     marginBottom: '8px',
@@ -289,7 +290,8 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   sectionSubtitle: {
     fontSize: '0.875rem',
-    color: Colors.light.muted,
+    fontWeight: '500',
+    color: Colors.light.text,
     marginBottom: '16px',
     margin: '0 0 16px 0',
   },

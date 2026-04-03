@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Leaf, User, Mail, Calendar, Briefcase } from 'lucide-react';
+import { Leaf, User, Mail, Calendar, Briefcase, Sprout } from 'lucide-react';
 import LinearGradient from '../components/LinearGradient';
 import { useApp } from '../contexts/AppContext';
 import Colors from '../constants/colors';
@@ -19,7 +19,7 @@ const Auth: React.FC = () => {
   });
   const [isAnonymous, setIsAnonymous] = useState(false);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!formData.name.trim()) {
       alert('Please enter your name');
       return;
@@ -39,8 +39,13 @@ const Auth: React.FC = () => {
       isAnonymous,
     };
 
-    register(userData);
-    navigate('/');
+    try {
+      await register(userData);
+      navigate('/');
+    } catch (err: any) {
+      console.error('Registration failed', err);
+      alert(`Registration failed: ${err?.message || err}. Please try again.`);
+    }
   };
 
   const handleAnonymousLogin = () => {
@@ -51,16 +56,12 @@ const Auth: React.FC = () => {
   return (
     <div style={styles.container}>
       <div style={styles.scrollContent}>
-        <LinearGradient
-          colors={[Colors.light.primary, Colors.light.secondary]}
-          style={styles.header}
-        >
-          <div style={styles.headerContent}>
-            <Leaf size={48} color="white" />
-            <h1 style={styles.title}>EcoPulse</h1>
-            <p style={styles.subtitle}>Smart Green Commute Tracker</p>
+        <div style={styles.header}>
+          <div style={styles.headerContent}>              
+            <h1 style={styles.title}>Welcome to EcoPulse <Leaf size={38} color="white" style={{ position: "relative", top: "5px" }} /></h1>
+            <p style={styles.subtitle}>Smart Green Commute Tracker <Sprout size={28} color="white" style={{ position: "relative", top: "5px" }} /></p>
           </div>
-        </LinearGradient>
+        </div>
 
         <div style={styles.form}>
           <h2 style={styles.formTitle}>
@@ -149,7 +150,7 @@ const Auth: React.FC = () => {
             onClick={handleRegister}
             disabled={isRegistering}
           >
-            {isRegistering ? 'Creating Profile...' : 'Get Started'}
+            {isRegistering ? 'Creating Profile...' : 'Start Tracking > > '}
           </button>
 
           {!isAnonymous && (
@@ -184,7 +185,30 @@ const Auth: React.FC = () => {
               Create Full Profile
             </button>
           )}
+
+          <div style={styles.signInContainer}>
+            <span style={styles.signInText}>
+              Already have an account?{' '}
+              <span 
+                style={styles.signInLink}
+                onClick={() => alert('Sign in functionality will be available soon!')}
+              >
+                Sign In
+              </span>
+            </span>
+          </div>
         </div>
+
+        <LinearGradient
+          colors={[Colors.light.primary, Colors.light.secondary]}
+          style={styles.footer}
+        >
+          <div style={styles.footerContent}>
+            <h2 style={styles.footerTitle}>
+              Your commute data helps measure community carbon reduction 🌍
+            </h2>
+          </div>
+        </LinearGradient>
       </div>
     </div>
   );
@@ -194,6 +218,10 @@ const styles: { [key: string]: React.CSSProperties } = {
   container: {
     minHeight: '100vh',
     backgroundColor: Colors.light.background,
+    backgroundImage: `linear-gradient(rgba(106, 236, 104, 0.9), rgba(219, 246, 210, 0.9)), url('https://png.pngtree.com/thumb_back/fw800/background/20231105/pngtree-natural-green-leaves-pattern-a-refreshing-background-and-wallpaper-image_13753535.png')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
   },
   scrollContent: {
     minHeight: '100vh',
@@ -201,13 +229,14 @@ const styles: { [key: string]: React.CSSProperties } = {
     flexDirection: 'column',
   },
   header: {
-    paddingTop: '60px',
-    paddingBottom: '40px',
+    paddingTop: '10px',
+    paddingBottom: '20px',
     paddingLeft: '20px',
     paddingRight: '20px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    background: `linear-gradient(135deg, ${Colors.light.primary}, ${Colors.light.secondary})`,
   },
   headerContent: {
     display: 'flex',
@@ -215,7 +244,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     alignItems: 'center',
   },
   title: {
-    fontSize: '2rem',
+    fontSize: '2.5rem',
     fontWeight: 'bold',
     color: 'white',
     marginTop: '16px',
@@ -250,7 +279,10 @@ const styles: { [key: string]: React.CSSProperties } = {
     backgroundColor: 'white',
     borderRadius: '12px',
     padding: '4px 16px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    borderColor: Colors.light.border,
+    borderWidth: '2px',
+    borderStyle: 'solid',
+    boxShadow: `1px 3px 6px ${Colors.light.shadow}`,
   },
   inputIcon: {
     marginRight: '12px',
@@ -317,8 +349,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: 'white',
   },
   secondaryButton: {
-    backgroundColor: 'transparent',
-    border: `2px solid ${Colors.light.primary}`,
+    backgroundColor: 'rgba(213, 235, 215, 0.9)',
+    border: `3px solid ${Colors.light.primary}`,
     color: Colors.light.primary,
     fontWeight: '600',
   },
@@ -326,6 +358,41 @@ const styles: { [key: string]: React.CSSProperties } = {
     opacity: 0.6,
     cursor: 'not-allowed',
   },
+  signInContainer: {
+    textAlign: 'center',
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+  signInText: {
+    fontSize: '1rem',
+    color: Colors.light.muted,
+  },
+  signInLink: {
+    color: Colors.light.primary,
+    fontWeight: 'bold',
+    textDecoration: 'underline',
+    cursor: 'pointer',
+  },
+  footer: {
+    padding: '20px',
+  },
+  footerContent: {
+    textAlign: 'center',
+  },
+  footerTitle: {
+    fontSize: '1.25rem',
+    fontWeight: 'semi-bold',
+    color: 'white',
+    margin: 0,
+  },
 };
 
 export default Auth;
+function rgba(arg0: number, arg1: number, arg2: number, arg3: number): import("csstype").Property.BackgroundColor | undefined {
+  throw new Error('Function not implemented.');
+}
+
+function gradient(circle: any, at: any, top: Window | null, arg3: string | (string & {}) | undefined, transparent: any, arg5: number) {
+  throw new Error('Function not implemented.');
+}
+

@@ -9,6 +9,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Leaf, User, Mail, Calendar, Briefcase } from 'lucide-react-native';
@@ -29,7 +30,7 @@ export default function AuthScreen() {
   });
   const [isAnonymous, setIsAnonymous] = useState(false);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!formData.name.trim()) {
       Alert.alert('Error', 'Please enter your name');
       return;
@@ -49,8 +50,13 @@ export default function AuthScreen() {
       isAnonymous,
     };
 
-    register(userData);
-    router.replace('/(tabs)');
+    try {
+      await register(userData);
+      router.replace('/(tabs)');
+    } catch (err: any) {
+      console.error('Registration failed', err);
+      Alert.alert('Registration failed', err?.message || 'Please try again.');
+    }
   };
 
   const handleAnonymousLogin = () => {
@@ -59,10 +65,15 @@ export default function AuthScreen() {
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    <ImageBackground
+      source={{ uri: 'https://pixabay.com/images/download/picsbyjameslee-flower-5042640_1920.jpg' }} // Placeholder nature image
+      style={styles.backgroundImage}
+      imageStyle={styles.backgroundImageStyle}
     >
+      <KeyboardAvoidingView 
+        style={styles.container} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <LinearGradient
           colors={[Colors.light.primary, Colors.light.secondary]}
@@ -193,13 +204,43 @@ export default function AuthScreen() {
               <Text style={styles.secondaryButtonText}>Create Full Profile</Text>
             </TouchableOpacity>
           )}
+
+          <View style={styles.signInContainer}>
+            <Text style={styles.signInText}>
+              Already have an account?{' '}
+              <Text 
+                style={styles.signInLink}
+                onPress={() => Alert.alert('Coming Soon', 'Sign in functionality will be available soon!')}
+              >
+                Sign In
+              </Text>
+            </Text>
+          </View>
         </View>
       </ScrollView>
+
+      <LinearGradient
+        colors={[Colors.light.primary, Colors.light.secondary]}
+        style={styles.footer}
+      >
+        <View style={styles.footerContent}>
+          <Text style={styles.footerText}>
+            Your commute data helps measure community carbon reduction 🌍
+          </Text>
+        </View>
+      </LinearGradient>
     </KeyboardAvoidingView>
+  </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+  },
+  backgroundImageStyle: {
+    opacity: 0.1, // Very faint background image
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.light.background,
@@ -220,6 +261,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     color: 'white',
+    // fontFamily: 'TitleFont',
     marginTop: 16,
   },
   subtitle: {
@@ -243,11 +285,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-    backgroundColor: 'white',
+    backgroundColor: Colors.dark.surface,
     borderRadius: 12,
+    borderWidth: 2,
+    borderColor: Colors.light.border,
     paddingHorizontal: 16,
     paddingVertical: 4,
-    shadowColor: '#000',
+    shadowColor: '#140303',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -321,5 +365,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: Colors.light.primary,
+  },
+  signInContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  signInText: {
+    fontSize: 16,
+    color: Colors.light.muted,
+  },
+  signInLink: {
+    color: Colors.light.primary,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
+  footer: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+  },
+  footerContent: {
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
   },
 });

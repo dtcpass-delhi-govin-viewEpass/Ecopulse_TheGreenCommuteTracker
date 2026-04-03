@@ -81,14 +81,14 @@ const styles: { [key: string]: React.CSSProperties } = {
   header: {
     backgroundColor: Colors.light.primary,
     padding: '1rem',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   headerContent: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    maxWidth: '1200px',
-    margin: '0 auto',
+    width: '100%',
+    padding: '0 1rem',
   },
   headerTitle: {
     color: Colors.light.card,
@@ -118,8 +118,6 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   main: {
     flex: 1,
-    maxWidth: '1200px',
-    margin: '0 auto',
     width: '100%',
     paddingBottom: '80px', // Space for bottom nav
   },

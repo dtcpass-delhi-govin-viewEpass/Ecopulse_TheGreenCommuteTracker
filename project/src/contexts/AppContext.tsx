@@ -2,14 +2,7 @@ import createContextHook from '@nkzw/create-context-hook';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { User, CommuteLog, CommunityStats } from '../types';
-import WebStorage from '../utils/storage';
-
-const STORAGE_KEYS = {
-  USER: 'ecopulse_user',
-  COMMUTE_LOGS: 'ecopulse_commute_logs',
-  COMMUNITY_STATS: 'ecopulse_community_stats',
-  USER_SETTINGS: 'ecopulse_user_settings',
-};
+import Database from '../utils/database';
 
 export const [AppProvider, useApp] = createContextHook(() => {
   const [user, setUser] = useState<User | null>(null);
@@ -17,19 +10,14 @@ export const [AppProvider, useApp] = createContextHook(() => {
   const [userSettings, setUserSettings] = useState<{ monthlyGoal: number }>({ monthlyGoal: 10 });
   const queryClient = useQueryClient();
 
-  // Load user from storage
+  // Load user from database
   const userQuery = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
       try {
-        const stored = await WebStorage.getItem(STORAGE_KEYS.USER);
-        if (stored) {
-          const userData = JSON.parse(stored);
-          // Convert createdAt string back to Date object
-          userData.createdAt = new Date(userData.createdAt);
-          return userData;
-        }
-        return null;
+        const db = Database.getInstance();
+        const users = await db.getAllUsers();
+        return users.length > 0 ? users[0] : null;
       } catch (error) {
         console.error('Error loading user:', error);
         return null;
@@ -42,16 +30,8 @@ export const [AppProvider, useApp] = createContextHook(() => {
     queryKey: ['commuteLogs'],
     queryFn: async () => {
       try {
-        const stored = await WebStorage.getItem(STORAGE_KEYS.COMMUTE_LOGS);
-        if (stored) {
-          const logs = JSON.parse(stored);
-          // Convert createdAt strings back to Date objects
-          return logs.map((log: any) => ({
-            ...log,
-            createdAt: new Date(log.createdAt),
-          }));
-        }
-        return [];
+        const db = Database.getInstance();
+        return await db.getCommuteLogs();
       } catch (error) {
         console.error('Error loading commute logs:', error);
         return [];
@@ -64,13 +44,17 @@ export const [AppProvider, useApp] = createContextHook(() => {
     queryKey: ['userSettings'],
     queryFn: async () => {
       try {
-        const stored = await WebStorage.getItem(STORAGE_KEYS.USER_SETTINGS);
-        return stored ? JSON.parse(stored) : { monthlyGoal: 10 };
+        const db = Database.getInstance();
+        if (user) {
+          return await db.getUserSettings(user.id);
+        }
+        return { monthlyGoal: 10 };
       } catch (error) {
         console.error('Error loading user settings:', error);
         return { monthlyGoal: 10 };
       }
     },
+    enabled: !!user,
   });
 
   // Load community stats
@@ -78,18 +62,8 @@ export const [AppProvider, useApp] = createContextHook(() => {
     queryKey: ['communityStats'],
     queryFn: async () => {
       try {
-        const stored = await WebStorage.getItem(STORAGE_KEYS.COMMUNITY_STATS);
-        if (stored) {
-          return JSON.parse(stored);
-        }
-        // Default stats
-        return {
-          totalUsers: 1,
-          totalCO2Saved: 0,
-          totalCO2SavedThisWeek: 0,
-          mostPopularMode: 'walking',
-          totalCommutes: 0,
-        };
+        const db = Database.getInstance();
+        return await db.getCommunityStats();
       } catch (error) {
         console.error('Error loading community stats:', error);
         return {
@@ -106,30 +80,27 @@ export const [AppProvider, useApp] = createContextHook(() => {
   // Register user mutation
   const registerMutation = useMutation({
     mutationFn: async (userData: Omit<User, 'id' | 'createdAt'>) => {
-      const newUser: User = {
-        ...userData,
-        id: Date.now().toString(),
-        createdAt: new Date(),
-      };
-      
-      await WebStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser));
-      
+      const db = Database.getInstance();
+
+      // Existing user path for same email (login-like behavior)
+      if (userData.email) {
+        const existingUser = await db.getUserByEmail(userData.email);
+        if (existingUser) {
+          return existingUser;
+        }
+      }
+
+      const newUser = await db.createUser(userData);
+
       // Update community stats
-      const currentStats = communityStatsQuery.data || {
-        totalUsers: 0,
-        totalCO2Saved: 0,
-        totalCO2SavedThisWeek: 0,
-        mostPopularMode: 'walking',
-        totalCommutes: 0,
-      };
-      
+      const currentStats = await db.getCommunityStats();
       const updatedStats = {
         ...currentStats,
         totalUsers: currentStats.totalUsers + 1,
       };
-      
-      await WebStorage.setItem(STORAGE_KEYS.COMMUNITY_STATS, JSON.stringify(updatedStats));
-      
+
+      await db.updateCommunityStats(updatedStats);
+
       return newUser;
     },
     onSuccess: (newUser) => {
@@ -143,30 +114,17 @@ export const [AppProvider, useApp] = createContextHook(() => {
   const addCommuteLogMutation = useMutation({
     mutationFn: async (logData: Omit<CommuteLog, 'id' | 'userId' | 'createdAt'>) => {
       if (!user) throw new Error('User not found');
-      
-      const newLog: CommuteLog = {
+
+      const db = Database.getInstance();
+      const newLog = await db.createCommuteLog({
         ...logData,
-        id: Date.now().toString(),
         userId: user.id,
-        createdAt: new Date(),
-      };
-      
-      const currentLogs = commuteLogsQuery.data || [];
-      const updatedLogs = [...currentLogs, newLog];
-      
-      await WebStorage.setItem(STORAGE_KEYS.COMMUTE_LOGS, JSON.stringify(updatedLogs));
-      
+      });
+
       // Update community stats
-      const currentStats = communityStatsQuery.data || {
-        totalUsers: 1,
-        totalCO2Saved: 0,
-        totalCO2SavedThisWeek: 0,
-        mostPopularMode: 'walking',
-        totalCommutes: 0,
-      };
-      
+      const currentStats = await db.getCommunityStats();
       const isThisWeek = new Date(newLog.createdAt).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
-      
+
       const updatedStats: CommunityStats = {
         ...currentStats,
         totalCO2Saved: currentStats.totalCO2Saved + newLog.co2Saved,
@@ -174,9 +132,9 @@ export const [AppProvider, useApp] = createContextHook(() => {
         totalCommutes: currentStats.totalCommutes + 1,
         mostPopularMode: newLog.modes[0] || currentStats.mostPopularMode,
       };
-      
-      await WebStorage.setItem(STORAGE_KEYS.COMMUNITY_STATS, JSON.stringify(updatedStats));
-      
+
+      await db.updateCommunityStats(updatedStats);
+
       return newLog;
     },
     onSuccess: () => {
@@ -188,7 +146,10 @@ export const [AppProvider, useApp] = createContextHook(() => {
   // Update user settings mutation
   const updateSettingsMutation = useMutation({
     mutationFn: async (settings: { monthlyGoal: number }) => {
-      await WebStorage.setItem(STORAGE_KEYS.USER_SETTINGS, JSON.stringify(settings));
+      if (!user) throw new Error('User not found');
+
+      const db = Database.getInstance();
+      await db.updateUserSettings(user.id, settings);
       return settings;
     },
     onSuccess: (settings) => {
@@ -200,7 +161,8 @@ export const [AppProvider, useApp] = createContextHook(() => {
   // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await WebStorage.removeItem(STORAGE_KEYS.USER);
+      // For logout, we just clear the user state but keep data in database
+      return true;
     },
     onSuccess: () => {
       setUser(null);
@@ -227,7 +189,7 @@ export const [AppProvider, useApp] = createContextHook(() => {
     isLoading: isLoading || userQuery.isLoading,
     commuteLogs: commuteLogsQuery.data || [],
     communityStats: communityStatsQuery.data,
-    register: registerMutation.mutate,
+    register: registerMutation.mutateAsync,
     addCommuteLog: addCommuteLogMutation.mutate,
     updateSettings: updateSettingsMutation.mutate,
     logout: logoutMutation.mutate,

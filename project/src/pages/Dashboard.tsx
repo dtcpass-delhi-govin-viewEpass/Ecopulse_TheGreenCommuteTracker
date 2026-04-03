@@ -253,12 +253,14 @@ const Dashboard: React.FC = () => {
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     backgroundColor: Colors.light.background,
+    backgroundImage: `linear-gradient(rgba(106, 236, 104, 0.9), rgba(219, 246, 210, 0.9)), url('https://png.pngtree.com/thumb_back/fw800/background/20231105/pngtree-natural-green-leaves-pattern-a-refreshing-background-and-wallpaper-image_13753535.png')`,
     minHeight: '100vh',
   },
   header: {
     padding: '40px 20px',
     display: 'flex',
     flexDirection: 'column',
+    color: Colors.light.accent,
     alignItems: 'center',
   },
   headerTitle: {
@@ -297,7 +299,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   statValue: {
     fontSize: '1.5rem',
@@ -319,7 +321,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '20px',
     borderRadius: '12px',
     marginBottom: '16px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   insightTitle: {
     fontSize: '1rem',
@@ -384,7 +386,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '12px',
     overflow: 'hidden',
     marginBottom: '16px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   communityGradient: {
     padding: '20px',
@@ -417,7 +419,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     padding: '20px',
     borderRadius: '12px',
     border: `2px solid ${Colors.light.warning}`,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   achievementTitle: {
     fontSize: '1.125rem',

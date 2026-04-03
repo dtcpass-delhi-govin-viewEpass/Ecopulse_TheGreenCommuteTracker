@@ -157,6 +157,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   container: {
     padding: '0',
     backgroundColor: Colors.light.background,
+    backgroundImage: `linear-gradient(rgba(106, 236, 104, 0.9), rgba(219, 246, 210, 0.9)), url('https://png.pngtree.com/thumb_back/fw800/background/20231105/pngtree-natural-green-leaves-pattern-a-refreshing-background-and-wallpaper-image_13753535.png')`,
     minHeight: '100vh',
   },
   welcomeSection: {
@@ -204,7 +205,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     alignItems: 'center',
     gap: '1rem',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   statContent: {
     display: 'flex',
@@ -236,7 +237,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     gap: '1rem',
     textDecoration: 'none',
     color: 'inherit',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
     transition: 'transform 0.2s, box-shadow 0.2s',
   },
   actionContent: {
@@ -260,7 +261,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   communityCard: {
     borderRadius: '12px',
     overflow: 'hidden',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 2px 4px ${Colors.light.shadow}`,
   },
   communityGradient: {
     padding: '1.5rem',
@@ -300,7 +301,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+    boxShadow: `0 1px 3px ${Colors.light.shadow}`,
   },
   recentDate: {
     fontSize: '0.875rem',
